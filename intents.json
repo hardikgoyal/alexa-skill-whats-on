@@ -1,0 +1,87 @@
+{
+  "intents": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": []
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": []
+    },
+    {
+      "name": "MenuIntent",
+      "samples": [
+        "What are they serving at {hall} ",
+        "What is for {meal} today",
+        "What is for {meal} ",
+        "What is at {hall}",
+        "What is for {meal} at {hall}",
+        "{meal} at {hall}",
+        "what is at {hall} for {meal}"
+      ],
+      "slots": [
+        {
+          "name": "hall",
+          "type": "hall",
+          "samples": []
+        },
+        {
+          "name": "meal",
+          "type": "meal",
+          "samples": []
+        }
+      ]
+    }
+  ],
+  "types": [
+    {
+      "name": "hall",
+      "values": [
+        {
+          "name": {
+            "value": "Cafe 84"
+          }
+        },
+        {
+          "name": {
+            "value": "Parkside"
+          }
+        },
+        {
+          "name": {
+            "value": "EVK"
+          }
+        }
+      ]
+    },
+    {
+      "name": "meal",
+      "values": [
+        {
+          "name": {
+            "value": "Dinner"
+          }
+        },
+        {
+          "name": {
+            "value": "Brunch"
+          }
+        },
+        {
+          "name": {
+            "value": "Breakfast"
+          }
+        },
+        {
+          "name": {
+            "value": "Lunch"
+          }
+        }
+      ]
+    }
+  ]
+}

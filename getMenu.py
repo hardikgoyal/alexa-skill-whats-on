@@ -1,27 +1,35 @@
 #--------------------- To parse and get the list of Menu for a restaurant -----------------
+# from __future__ import print_function
 import urllib2
 from bs4 import BeautifulSoup
 import datetime as dt  
 
+
 # page = urllib2.urlopen("http://hospitality.usc.edu/residential-dining-menus//?menu_venue=venue-514&menu_date=03/03/2017");
 def getSpeech(diningHall, meal):
 	page = "";
-	date = dt.datetime.today().strftime("%m/%d/%Y")
-	if diningHall == "Cafe 84":
+	date = dt.datetime.today().strftime("%m/%d/%Y")	
+	# date = "03/03/2017";
+	if str(diningHall) == "cafe 84":
 		page = "http://hospitality.usc.edu/residential-dining-menus//?menu_venue=venue-507&menu_date=" + str(date);
-	elif diningHall == "Parkside":
+	elif str(diningHall) == "parkside":
 		page = "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + str(date);
-	elif diningHall == "EVK":
+	elif str(diningHall) == "evk":
 		page = "http://hospitality.usc.edu/residential-dining-menus//?menu_venue=venue-514&menu_date=" + str(date);
-	print page;
+	else:
+		return "Invalid Request";
 	mealno = 0;
-	if (meal == "brunch"):
+	if (str(meal) == "breakfast"):
+		mealno = int(0);
+	elif (str(meal) == "brunch"):
 		mealno = int(1);
-	elif (meal == "lunch"):
+	elif (str(meal) == "lunch"):
 		mealno = int(2)
-	elif (meal == "dinner"):
+	elif (str(meal) == "dinner"):
 		mealno = int(3)
-
+	else:
+		return "Invalid Request";
+	
 	menu = getMenu(page, mealno);
 
 	speechFinal = "At " + diningHall + " for " + meal + ". ";
@@ -35,11 +43,13 @@ def getSpeech(diningHall, meal):
 
 	if (speech == ""):
 		speechFinal = "At " + diningHall + " they are not serving " + meal + " today.";
-	print speechFinal;
-
+	else:
+		speechFinal+=speech;
+	return speechFinal
 
 
 def getMenu(page, mealnum):
+	# print (str(page) + "->>??<<--")
 	soup = BeautifulSoup(urllib2.urlopen(page), "lxml")
 	menu = soup.find("div", { "class" : "fw-accordion-content dining-location-accordion row" })
 	[s.extract() for s in menu('span')]
@@ -56,7 +66,7 @@ def getMenu(page, mealnum):
 				continue;
 			items = [];
 			for item in allLists[count]:
-				items.append(str(item.getText()))
+				items.append(str(item.getText().encode('ascii', 'ignore')))
 			count+=1;
 			items;
 			allsublists.append((str(i.getText()), items))
@@ -64,6 +74,5 @@ def getMenu(page, mealnum):
 	# print mealnum;
 	return finalMenu [int(mealnum)];
 	# return finalMenu[int(mealnum)];
-
 
 
