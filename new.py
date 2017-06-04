@@ -41,17 +41,17 @@ def get_welcome_response():
         "hall":"none"
     }
     card_title = "Welcome"
-    speech_output = "Welcome to the What's cooking at USC Dinning Hall. " \
-                    "What dinning hall would you be interested in, " \
-                    "You can say any of the three dinning hall's name"
+    speech_output = "Welcome to the What's cooking at USC dining Hall. " \
+                    "What dining hall would you be interested in, " \
+                    "You can say any of the three dining hall's name"
     # If the user either does not reply to the welcome message or says something
-    reprompt_text = "What dinning hall would you be interested in, " \
-                    "You can say any of the three dinning hall's name"
+    reprompt_text = "What dining hall would you be interested in, " \
+                    "You can say any of the three dining hall's name"
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         card_title, speech_output, reprompt_text, should_end_session))
 
-def MenuItem(intent, session):
+def MenuIntent(intent, session):
     card_title = intent['name']
     should_end_session = False
     sessionAttr = session.get('attributes', {});
@@ -70,27 +70,27 @@ def MenuItem(intent, session):
             speech_output =  getSpeech (session['attributes']['hall'],session['attributes']['meal'])          
             reprompt_text = None;
             should_end_session = True;
-        elif:
-            #Ask for Dinning Hall.
+        else:
+            #Ask for dining Hall.
             speech_output = "What meal's menu are you looking at" + \
-                            dinningHall + \
+                            session['attributes']['hall'] + \
                             "?"                        
             reprompt_text = "What meal's menu are you looking at" + \
-                            dinningHall + \
+                            session['attributes']['hall'] + \
                             "?"
     elif 'meal' in intent['slots']:
         session['attributes']['meal'] = intent['slots']['meal']['value']
-        if session['attributes']['hall'] != "none":
+        if session['attributes']['meal'] != "none":
             # Information Complete;
             speech_output =  getSpeech (session['attributes']['hall'],session['attributes']['meal'])
             reprompt_text = None;
             should_end_session = True;
-        elif:
+        else:
             #Ask for Meal Information.   
-            speech_output = "What dinning hall's" + \
-                            meal + " menu would you like ?"                        
-            reprompt_text = "What dinning hall's" + \
-                            meal + " menu would you like ?" 
+            speech_output = "What dining hall's" + \
+                            session['attributes']['meal'] + " menu would you like ?"                        
+            reprompt_text = "What dining hall's" + \
+                            session['attributes']['meal'] + " menu would you like ?" 
     else:
         speech_output = "I'm not sure what you said. " \
                         "Please try Again."
@@ -120,7 +120,7 @@ def on_session_started(session_started_request, session):
 
 
 def on_launch(launch_request, session):
-    #to_store the data of the session, what dinning hall, etc.
+    #to_store the data of the session, what dining hall, etc.
 
     print("on_launch requestId=" + launch_request['requestId'] +
           ", sessionId=" + session['sessionId'])
@@ -162,9 +162,9 @@ def lambda_handler(event, context):
     print("event.session.application.applicationId=" +
           event['session']['application']['applicationId'])
 
-    if (event['session']['application']['applicationId'] !=
-            "amzn1.echo-sdk-ams.app.[unique-value-here]"):
-        raise ValueError("Invalid Application ID")
+    # if (event['session']['application']['applicationId'] !=
+    #         "amzn1.echo-sdk-ams.app.[unique-value-here]"):
+    #     raise ValueError("Invalid Application ID")
 
     if event['session']['new']:
         on_session_started({'requestId': event['request']['requestId']},

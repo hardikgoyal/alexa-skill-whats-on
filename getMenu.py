@@ -4,14 +4,14 @@ from bs4 import BeautifulSoup
 import datetime as dt  
 
 # page = urllib2.urlopen("http://hospitality.usc.edu/residential-dining-menus//?menu_venue=venue-514&menu_date=03/03/2017");
-def getSpeech(dinningHall, meal):
+def getSpeech(diningHall, meal):
 	page = "";
 	date = dt.datetime.today().strftime("%m/%d/%Y")
-	if dinningHall == "Cafe 84":
+	if diningHall == "Cafe 84":
 		page = "http://hospitality.usc.edu/residential-dining-menus//?menu_venue=venue-507&menu_date=" + str(date);
-	elif dinningHall == "Parkside":
+	elif diningHall == "Parkside":
 		page = "http://hospitality.usc.edu/residential-dining-menus/?menu_venue=venue-518&menu_date=" + str(date);
-	elif dinningHall == "EVK":
+	elif diningHall == "EVK":
 		page = "http://hospitality.usc.edu/residential-dining-menus//?menu_venue=venue-514&menu_date=" + str(date);
 	print page;
 	mealno = 0;
@@ -24,7 +24,7 @@ def getSpeech(dinningHall, meal):
 
 	menu = getMenu(page, mealno);
 
-	speechFinal = "At " + dinningHall + " for " + meal + ". ";
+	speechFinal = "At " + diningHall + " for " + meal + ". ";
 	# print menu;
 	speech = "";
 	for menuItem in menu[1]:
@@ -34,7 +34,7 @@ def getSpeech(dinningHall, meal):
 		speech += "and " + menuItem[1][-1] +". ";
 
 	if (speech == ""):
-		speechFinal = "At " + dinningHall + " they are not serving " + meal + " today.";
+		speechFinal = "At " + diningHall + " they are not serving " + meal + " today.";
 	print speechFinal;
 
 
@@ -65,6 +65,5 @@ def getMenu(page, mealnum):
 	return finalMenu [int(mealnum)];
 	# return finalMenu[int(mealnum)];
 
-getSpeech("EVK", "brunch");
 
 
