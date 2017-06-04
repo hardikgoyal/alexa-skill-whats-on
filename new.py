@@ -35,7 +35,10 @@ def build_response(session_attributes, speechlet_response):
 
 def get_welcome_response():
 
-    session_attributes = {}
+    session_attributes = {
+        "meal":"none",
+        "hall":"none"
+    }
     card_title = "Welcome"
     speech_output = "Welcome to the What's cooking at USC Dinning Hall. " \
                     "What dinning hall would you be interested in, " \
@@ -48,7 +51,51 @@ def get_welcome_response():
         card_title, speech_output, reprompt_text, should_end_session))
 
 def MenuItem(intent, session):
-    return build_response( ,build_speechlet_response());
+    card_title = intent['name']
+    should_end_session = False
+    sessionAttr = session.get('attributes', {});
+    menu = [];
+    if 'hall' in intent['slots'] and 'meal' in intent['slots']:
+        session['attributes']['hall'] = intent['slots']['hall']['value']
+        session['attributes']['meal'] = intent['slots']['meal']['value']
+        menu = getMenu(session);
+        reprompt_text = None;
+        should_end_session = True;
+        # Some more. 
+    elif 'hall' in intent['slots']:
+        session['attributes']['hall'] = intent['slots']['hall']['value']
+        if session['attributes']['meal'] != "none":
+            #Its done.
+            reprompt_text = None;
+            should_end_session = True;
+        elif:
+            #Ask for Dinning Hall.
+            speech_output = "What meal's menu are you looking at" + \
+                            dinningHall + \
+                            "?"                        
+            reprompt_text = "What meal's menu are you looking at" + \
+                            dinningHall + \
+                            "?"
+    elif 'meal' in intent['slots']:
+        session['attributes']['meal'] = intent['slots']['meal']['value']
+        if session['attributes']['hall'] != "none":
+            # Information Complete;
+            reprompt_text = None;
+            should_end_session = True;
+        elif:
+            #Ask for Meal Information.   
+            speech_output = "What dinning hall's" + \
+                            meal + " menu would you like ?"                        
+            reprompt_text = "What dinning hall's" + \
+                            meal + " menu would you like ?" 
+    else:
+        speech_output = "I'm not sure what you said. " \
+                        "Please try Again."
+        reprompt_text = "I'm not sure what you said. " \
+                        "Please try Again"
+
+    return build_response(session.get('attributes',{}), build_speechlet_response(
+        card_title, speech_output, reprompt_text, should_end_session))
 
 
 def handle_session_end_request():
