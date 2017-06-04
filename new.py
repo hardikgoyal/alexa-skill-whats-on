@@ -1,4 +1,5 @@
 from __future__ import print_function
+from getMenu import getSpeech
 
 # --------------- Helpers that build all of the responses ----------------------
 
@@ -61,11 +62,12 @@ def MenuItem(intent, session):
         menu = getMenu(session);
         reprompt_text = None;
         should_end_session = True;
+        speech_output =  getSpeech (session['attributes']['hall'],session['attributes']['meal'])
         # Some more. 
     elif 'hall' in intent['slots']:
         session['attributes']['hall'] = intent['slots']['hall']['value']
         if session['attributes']['meal'] != "none":
-            #Its done.
+            speech_output =  getSpeech (session['attributes']['hall'],session['attributes']['meal'])          
             reprompt_text = None;
             should_end_session = True;
         elif:
@@ -80,6 +82,7 @@ def MenuItem(intent, session):
         session['attributes']['meal'] = intent['slots']['meal']['value']
         if session['attributes']['hall'] != "none":
             # Information Complete;
+            speech_output =  getSpeech (session['attributes']['hall'],session['attributes']['meal'])
             reprompt_text = None;
             should_end_session = True;
         elif:
